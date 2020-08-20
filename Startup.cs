@@ -16,57 +16,61 @@ using IdentityServer4.Services;
 
 namespace AuthSSO
 {
-  public class Startup
-  {
-    private readonly IWebHostEnvironment _environment;
-    private readonly IConfiguration _configuration;
-
-    public Startup(IWebHostEnvironment environment, IConfiguration configuration)
+    public class Startup
     {
-      _environment = environment;
-      _configuration = configuration;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IConfiguration _configuration;
+
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
+        {
+            _environment = environment;
+            _configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllersWithViews();
+
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                var connectionString = _configuration.GetConnectionString("Default");
+                options.UseNpgsql(connectionString);
+            });
+
+            services.Configure<IISOptions>(options =>
+            {
+                options.AutomaticAuthentication = false;
+            });
+            services.AddIdentityServer()
+              .AddDeveloperSigningCredential()
+              .AddInMemoryIdentityResources(Config.IdentityResources)
+              .AddInMemoryApiScopes(Config.ApiScopes)
+              .AddInMemoryClients(Config.CLients);
+
+            services.AddTransient<IResourceOwnerPasswordValidator, Configs.ResourceOwnerPasswordValidator>();
+            services.AddTransient<IProfileService, Configs.ProfileService>();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            env.IsProduction();
+
+
+            app.UseRouting();
+
+            app.UseIdentityServer();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
+        }
     }
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-      // services.AddControllersWithViews();
-
-      services.AddDbContext<AppDbContext>(options =>
-      {
-        var connectionString = _configuration.GetConnectionString("Default");
-        options.UseNpgsql(connectionString);
-      });
-
-      services.AddIdentityServer()
-        .AddDeveloperSigningCredential()
-        .AddInMemoryIdentityResources(Config.IdentityResources)
-        .AddInMemoryApiScopes(Config.ApiScopes)
-        .AddInMemoryClients(Config.CLients);
-
-      services.AddTransient<IResourceOwnerPasswordValidator, Configs.ResourceOwnerPasswordValidator>();
-      services.AddTransient<IProfileService, Configs.ProfileService>();
-    }
-
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-
-      env.IsProduction();
-
-
-      app.UseRouting();
-
-      app.UseIdentityServer();
-
-      app.UseAuthorization();
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapDefaultControllerRoute();
-      });
-    }
-  }
 }
