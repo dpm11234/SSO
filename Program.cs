@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -20,8 +21,9 @@ namespace AuthSSO
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-              // webBuilder.UseEnvironment()
-              // webBuilder.UseUrls("http://localhost:8889");
+              webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+              webBuilder.UseIISIntegration();
+              // webBuilder.UseIIS();
               webBuilder.UseStartup<Startup>();
             });
   }
