@@ -20,8 +20,8 @@ namespace AuthSSO
         Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
             {
-              // webBuilder.UseEnvironment()
-              // webBuilder.UseUrls("http://localhost:8889");
+              webBuilder.UseKestrel();
+              webBuilder.UseIISIntegration();
               webBuilder.UseStartup<Startup>();
             });
   }
