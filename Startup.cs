@@ -54,6 +54,9 @@ namespace AuthSSO
         app.UseDeveloperExceptionPage();
       }
 
+      env.IsProduction();
+
+
       app.UseRouting();
 
       app.UseIdentityServer();
