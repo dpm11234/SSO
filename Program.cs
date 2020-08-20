@@ -23,7 +23,7 @@ namespace AuthSSO
             {
               webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
               webBuilder.UseIISIntegration();
-              webBuilder.UseIIS();
+              // webBuilder.UseIIS();
               webBuilder.UseStartup<Startup>();
             });
   }
