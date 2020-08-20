@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace AuthSSO.Models
 {
@@ -30,8 +31,12 @@ namespace AuthSSO.Models
     {
       if (!optionsBuilder.IsConfigured)
       {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=BNQY7A;User Id=postgres;Password=123123Mau;", x => x.UseNetTopologySuite());
+        // Get configuration for dynamic connection string in ef
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+        optionsBuilder.UseNpgsql(configuration.GetConnectionString("Default"), x => x.UseNetTopologySuite());
       }
     }
 
