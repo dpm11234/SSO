@@ -26,11 +26,10 @@ namespace AuthSSO
         {
           RequireConsent= false,
           ClientId = "angular_spa",
+          ClientSecrets = { new Secret("angular_app_secret".Sha256()) },
           ClientName = "Angular App",
-          AllowedGrantTypes = GrantTypes.Implicit,
+          AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
           AllowedScopes = { "openid", "profile", "api" },
-          RedirectUris = {"http://localhost:4200/auth-callback"},
-          PostLogoutRedirectUris = {"http://localhost:4200/"},
           AllowedCorsOrigins = {"http://localhost:4200"},
           AllowAccessTokensViaBrowser = true,
           AccessTokenLifetime = 3600 * 24 * 30 * 12
