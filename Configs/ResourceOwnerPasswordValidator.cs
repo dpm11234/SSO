@@ -6,6 +6,7 @@ using Dapper;
 using AuthSSO.Models;
 using System.Linq;
 using IdentityServer4.Models;
+using System;
 
 namespace AuthSSO.Configs
 {
@@ -15,11 +16,18 @@ namespace AuthSSO.Configs
     {
       AppDbContext _appContext = new AppDbContext();
 
-      SysAppusers user = _appContext.SysAppusers.Where(user => user.Username == context.UserName).FirstOrDefault();
+      SysAppusers user = _appContext.SysAppusers.Where(user => user.Username == context.UserName && user.Passwd == context.Password).FirstOrDefault();
+
+      Console.WriteLine(context.ToString());
 
       if (user == null)
       {
-        context.Result = new GrantValidationResult(TokenRequestErrors.InvalidRequest, "User name or password invalid");
+        GrantValidationResult result = new GrantValidationResult();
+        result.Error = "invalid_user";
+        result.ErrorDescription = "Username or password invalid";
+        result.IsError = true;
+
+        context.Result = result;
         return Task.FromResult(0);
       }
 
