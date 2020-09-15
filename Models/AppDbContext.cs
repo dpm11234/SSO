@@ -316,9 +316,9 @@ namespace AuthSSO.Models
 
         entity.Property(e => e.Lockeddate).HasColumnName("lockeddate");
 
-        entity.Property(e => e.Passwd)
+        entity.Property(e => e.Password)
                   .IsRequired()
-                  .HasColumnName("passwd")
+                  .HasColumnName("password")
                   .HasMaxLength(256);
 
         entity.Property(e => e.Phone)

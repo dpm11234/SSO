@@ -40,24 +40,26 @@ namespace AuthSSO
                 options.UseNpgsql(connectionString);
             });
             // services.AddIdentity<SysAppusers, SysApproles>()
-            services.AddIdentity<SysAppusers, SysApproles>()
-             .AddEntityFrameworkStores<AppDbContext>()
-             .AddDefaultTokenProviders();
+            // services.AddIdentity<SysAppusers, SysApproles>()
+            //  .AddEntityFrameworkStores<AppDbContext>()
+            //  .AddDefaultTokenProviders();
 
             services.Configure<IISOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
             });
-            services.AddIdentityServer(options =>
-            {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents = true;
-                options.Events.RaiseFailureEvents = true;
-                options.Events.RaiseSuccessEvents = true;
+            services.AddIdentityServer(
+            //     options =>
+            // {
+            //     options.Events.RaiseErrorEvents = true;
+            //     options.Events.RaiseInformationEvents = true;
+            //     options.Events.RaiseFailureEvents = true;
+            //     options.Events.RaiseSuccessEvents = true;
 
-                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
-                options.EmitStaticAudienceClaim = true;
-            })
+            //     // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+            //     options.EmitStaticAudienceClaim = true;
+            // }
+            )
               .AddDeveloperSigningCredential()
               .AddInMemoryIdentityResources(Config.IdentityResources)
               .AddInMemoryApiScopes(Config.ApiScopes)

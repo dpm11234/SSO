@@ -52,7 +52,7 @@ namespace AuthSSO
           ClientId = "login",
           ClientName = "Test App",
 
-          AllowedGrantTypes =new[] {GrantType.AuthorizationCode, GrantType.ResourceOwnerPassword},
+          AllowedGrantTypes =GrantTypes.ResourceOwnerPassword,
           RedirectUris= {"http://localhost:3001/callback"},
           ClientSecrets = { new Secret("client_secret".Sha256()) },
           AllowAccessTokensViaBrowser = true,
