@@ -11,6 +11,7 @@ namespace AuthSSO.Configs
 
     public Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
+      System.Console.WriteLine(context);
       context.IssuedClaims = context.Subject.Claims.ToList();
       return Task.FromResult(0);
     }
