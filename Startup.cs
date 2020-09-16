@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using IdentityServer4.Validation;
 using IdentityServer4.Services;
-
+using Microsoft.Extensions.Logging;
 
 namespace AuthSSO
 {
@@ -33,6 +33,12 @@ namespace AuthSSO
 
             services.AddDbContext<AppDbContext>(options =>
             {
+                if (_environment.IsDevelopment())
+                {
+                    Console.WriteLine("dev");
+                    options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+                }
+
                 var connectionString = _configuration.GetConnectionString("Default");
                 options.UseNpgsql(connectionString);
             });

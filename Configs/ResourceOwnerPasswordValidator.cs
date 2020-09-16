@@ -9,19 +9,23 @@ using IdentityServer4.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-
+using Microsoft.EntityFrameworkCore;
 namespace AuthSSO.Configs
 {
     public class ResourceOwnerPasswordValidator : IResourceOwnerPasswordValidator
     {
         public Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
+            System.Console.WriteLine("hello");
             AppDbContext _appContext = new AppDbContext();
 
-            SysAppusers user = _appContext.SysAppusers.Where(user => user.Username == context.UserName && user.Passwd == context.Password).FirstOrDefault();
-
-            Console.WriteLine(context.ToString());
-
+            SysAppusers user = _appContext.SysAppusers.Include(user => user.SysUserandroles)
+                                                      .ThenInclude(userAndRoles => userAndRoles.Role)
+                                                      .Where(user => user.Username == context.UserName && user.Passwd == context.Password)
+                                                      .FirstOrDefault();
+            // SysApproles roles = _appContext.SysApproles.Where(roles => roles.Roleid == _appContext.SysUserandroles.Where(ur => ur.Userid == user.Id && ur.Roleid == roles.Roleid).Select(ur => ur.Roleid).FirstOrDefault())
+            // Console.WriteLine(context.ToString());
+            // System.Console.WriteLine(user.SysUserandroles.Select(x => x.).FirstOrDefault());
             if (user == null)
             {
                 GrantValidationResult result = new GrantValidationResult();
@@ -37,9 +41,10 @@ namespace AuthSSO.Configs
             claims.Add(new Claim("email", user.Email));
             claims.Add(new Claim("username", user.Username));
             // claims.Add(new Claim("username", user.SysApproles));
-            foreach (var roles in user.SysApproles)
+            foreach (var role in user.SysUserandroles)
             {
-                claims.Add(new Claim("roles", roles.Rolename));
+                System.Console.WriteLine(role.Roleid);
+                claims.Add(new Claim("roles", role.Role.Rolename));
             }
             context.Result = new GrantValidationResult(user.Userid.ToString(), "password", claims);
             //   new System.Collections.Generic.Dictionary<string, object>

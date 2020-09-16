@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 namespace AuthSSO.Models
 {
   public partial class AppDbContext : DbContext
@@ -36,7 +36,9 @@ namespace AuthSSO.Models
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json")
             .Build();
-        optionsBuilder.UseNpgsql(configuration.GetConnectionString("Default"), x => x.UseNetTopologySuite());
+
+                optionsBuilder.UseLoggerFactory(LoggerFactory.Create(options => options.AddConsole()));
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("Default"), x => x.UseNetTopologySuite());
       }
     }
 
@@ -349,6 +351,9 @@ namespace AuthSSO.Models
                   .WithMany(p => p.SysAppusers)
                   .HasForeignKey(d => d.Groupid)
                   .HasConstraintName("fk_sys_appusers2");
+        
+        // entity.HasMany(d => d.SysApproles).WithOne(i => i.)
+        
       });
 
       modelBuilder.Entity<SysBranch>(entity =>
