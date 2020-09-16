@@ -34,11 +34,11 @@ namespace AuthSSO
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                var connectionString = _configuration.GetConnectionString("Default");
-                options.UseNpgsql(connectionString);
-            });
+            // services.AddDbContext<AppDbContext>(options =>
+            // {
+            //     var connectionString = _configuration.GetConnectionString("Default");
+            //     options.UseNpgsql(connectionString);
+            // });
             // services.AddIdentity<SysAppusers, SysApproles>()
             // services.AddIdentity<SysAppusers, SysApproles>()
             //  .AddEntityFrameworkStores<AppDbContext>()
@@ -64,6 +64,8 @@ namespace AuthSSO
               .AddInMemoryIdentityResources(Config.IdentityResources)
               .AddInMemoryApiScopes(Config.ApiScopes)
               .AddInMemoryClients(Config.CLients);
+
+            services.AddScoped<IUserManager, UserManager>();
 
             services.AddTransient<IResourceOwnerPasswordValidator, Configs.ResourceOwnerPasswordValidator>();
             services.AddTransient<IProfileService, Configs.ProfileService>();

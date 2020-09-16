@@ -43,6 +43,9 @@ namespace IdentityServerHost.Quickstart.UI
         {
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
+
+            Console.WriteLine(vm.ReturnUrl);
+
             return View(vm);
 
         }
@@ -94,6 +97,8 @@ namespace IdentityServerHost.Quickstart.UI
                     };
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, "UserId", "UserId", clientId: context?.Client.ClientId));
 
+                    Console.WriteLine(model.ReturnUrl);
+
                     if (context != null)
                     {
                         if (context.IsNativeClient())
@@ -102,6 +107,7 @@ namespace IdentityServerHost.Quickstart.UI
                             // return the response is for better UX for the end user.
                             return this.LoadingPage("Redirect", model.ReturnUrl);
                         }
+
 
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
@@ -126,6 +132,8 @@ namespace IdentityServerHost.Quickstart.UI
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId: context?.Client.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
             }
+
+
 
             // something went wrong, show form with error
             var vm = await BuildLoginViewModelAsync(model);
