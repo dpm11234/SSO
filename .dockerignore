@@ -1,0 +1,19 @@
+.vscode/
+bin/
+obj/
+out/
+TestResults/
+# .dockerignore
+
+Dockerfile
+[b|B]in
+[O|o]bj
+
+# directories
+**/bin/
+**/obj/
+**/out/
+
+# files
+Dockerfile*
+**/*.md
