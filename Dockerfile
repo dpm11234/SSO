@@ -6,8 +6,6 @@ COPY *.csproj ./
 RUN dotnet restore
 
 COPY . ./
-# RUN dotnet dev-certs https -ep ./https/aspnetapp.pfx -p phuquy123
-# RUN dotnet user-secrets -p AuthSSO.csproj set "Kestrel:Certificates:Development:Password" "phuquy123"
 RUN dotnet publish -c Release -o out 
 
 # Generate run time image
