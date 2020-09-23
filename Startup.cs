@@ -40,6 +40,7 @@ namespace AuthSSO
 
                 var connectionString = _configuration.GetConnectionString("Default");
                 options.UseNpgsql(connectionString);
+                // options.
             });
 
             services.Configure<IISOptions>(options =>
