@@ -29,6 +29,12 @@ namespace AuthSSO
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("AllowAll", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddControllersWithViews();
 
             services.AddDbContext<AppDbContext>(options =>
@@ -43,10 +49,10 @@ namespace AuthSSO
                 // options.
             });
 
-            services.Configure<IISOptions>(options =>
-            {
-                options.AutomaticAuthentication = false;
-            });
+            // services.Configure<IISOptions>(options =>
+            // {
+            //     options.AutomaticAuthentication = false;
+            // });
             services.AddIdentityServer()
               .AddDeveloperSigningCredential()
               .AddInMemoryIdentityResources(Config.IdentityResources)
@@ -59,13 +65,13 @@ namespace AuthSSO
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            env.IsProduction();
-
+            app.UseCors("AllowAll");
 
             app.UseRouting();
 
