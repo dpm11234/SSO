@@ -32,7 +32,7 @@ namespace AuthSSO.Models
         public DateTime? Lastupdateddate { get; set; }
         public string Deleteduser { get; set; }
         public DateTime? Deleteddate { get; set; }
-        public decimal? Groupid { get; set; }
+        public Int32 Groupid { get; set; }
         public string Defaultbranchid { get; set; }
 
         public virtual SysCustomer Customer { get; set; }

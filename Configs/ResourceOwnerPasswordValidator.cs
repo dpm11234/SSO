@@ -21,6 +21,8 @@ namespace AuthSSO.Configs
 
             SysAppusers user = _appContext.SysAppusers.Include(user => user.SysUserandroles)
                                                       .ThenInclude(userAndRoles => userAndRoles.Role)
+                                                      //   .Include(user => user.Group)
+                                                      //   .ThenInclude(group => group.Groupid)
                                                       .Where(user => user.Username == context.UserName && user.Passwd == context.Password)
                                                       .FirstOrDefault();
             // SysApproles roles = _appContext.SysApproles.Where(roles => roles.Roleid == _appContext.SysUserandroles.Where(ur => ur.Userid == user.Id && ur.Roleid == roles.Roleid).Select(ur => ur.Roleid).FirstOrDefault())
@@ -40,12 +42,15 @@ namespace AuthSSO.Configs
             var claims = new List<Claim>();
             claims.Add(new Claim("email", user.Email));
             claims.Add(new Claim("username", user.Username));
+            claims.Add(new Claim("userId", user.Userid));
             // claims.Add(new Claim("username", user.SysApproles));
             foreach (var role in user.SysUserandroles)
             {
-                System.Console.WriteLine(role.Roleid);
                 claims.Add(new Claim("roles", role.Role.Rolename));
             }
+
+            claims.Add(new Claim("groupId", user.Groupid.ToString()));
+
             context.Result = new GrantValidationResult(user.Userid.ToString(), "password", claims);
             //   new System.Collections.Generic.Dictionary<string, object>
             //   {

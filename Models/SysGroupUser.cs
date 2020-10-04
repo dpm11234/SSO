@@ -10,7 +10,7 @@ namespace AuthSSO.Models
             SysAppusers = new HashSet<SysAppusers>();
         }
 
-        public decimal Groupid { get; set; }
+        public Int32 Groupid { get; set; }
         public string Groupname { get; set; }
 
         public virtual ICollection<SysAppusers> SysAppusers { get; set; }
