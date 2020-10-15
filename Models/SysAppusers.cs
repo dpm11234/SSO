@@ -15,6 +15,8 @@ namespace AuthSSO.Models
         public string Userid { get; set; }
         public decimal Id { get; set; }
         public string Customerid { get; set; }
+
+        public string PatientId { get; set; }
         public string Username { get; set; }
         public string Fullname { get; set; }
         public string Passwd { get; set; }

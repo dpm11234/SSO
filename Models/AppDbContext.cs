@@ -258,6 +258,10 @@ namespace AuthSSO.Models
                     .HasColumnName("userid")
                     .HasMaxLength(36);
 
+                entity.Property(e => e.PatientId)
+                    .HasColumnName("patient_id")
+                    .HasMaxLength(8);
+
                 entity.Property(e => e.Createddate)
                     .HasColumnName("createddate")
                     .HasDefaultValueSql("now()");
