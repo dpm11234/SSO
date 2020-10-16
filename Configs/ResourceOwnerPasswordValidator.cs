@@ -43,7 +43,10 @@ namespace AuthSSO.Configs
             claims.Add(new Claim("email", user.Email));
             claims.Add(new Claim("username", user.Username));
             claims.Add(new Claim("userId", user.Userid));
-            claims.Add(new Claim("patientId", user.PatientId));
+            if (user.PatientId != null)
+            {
+                claims.Add(new Claim("patientId", user.PatientId));
+            }
             // claims.Add(new Claim("username", user.SysApproles));
             foreach (var role in user.SysUserandroles)
             {
